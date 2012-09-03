@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<title>DistanceJs</title>
+		<script type="text/javascript" src="../jquery.js"></script>
+		<script type="text/javascript" src="../distance.js"></script>
+
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+		<script type="text/javascript">
+			var map, mapOptions, position, lat, lng, info;
+
+			function initialize() {
+
+	      mapOptions = {
+	        center: new google.maps.LatLng(13.7500, 100.4833),
+	        zoom: 3,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	      };
+
+	      // create map
+	      map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+	      // create current location marker
+	      if(navigator.geolocation) {
+			    navigator.geolocation.watchPosition(function (position) {
+			      lat = position.coords.latitude;
+			      lng = position.coords.longitude;
+
+			      position = new google.maps.LatLng(lat, lng);
+
+			      info = new google.maps.InfoWindow({
+			      	content : "Your location : " + lat + "/" + lng
+			      });
+
+			      marker = new google.maps.Marker({
+							map: map,
+							position: position
+						});
+
+						info.open(map, marker);
+			    });
+			  }
+
+			  // create destination location marker
+	      $("li").each(function(i, v) {
+	      	position = new google.maps.LatLng($(v).data('lat'), $(v).data('lng'));
+
+					marker = new google.maps.Marker({
+						map: map,
+						position: position
+					});
+				});
+	    }
+
+			Distance.init();
+		</script>
+	</head>
+
+	<body onload="initialize()">
+		<ul>
+			<li data-with-distance="true" data-lat="52.4800" data-lng="-1.9100">
+				Distance from your location to Birmingham about : 	<span class="distance"></span>
+			</li>
+			<li data-with-distance="true" data-lat="13.7500" data-lng="100.4833">
+				Distance from your location to Bangkok about : 	<span class="distance"></span>
+			</li>
+			<li data-with-distance="true" data-lat="9.1021" data-lng="18.2812">
+				Distance from your location to Africa about : 	<span class="distance"></span>
+			</li>
+			<li data-with-distance="true" data-lat="40.734771" data-lng="-74.009605">
+				Distance from your location to New York about : 	<span class="distance"></span>
+			</li>
+		</ul>	
+
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+
+  </body>
+
+</html>
